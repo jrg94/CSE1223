@@ -38,17 +38,21 @@ public class Project01 {
     System.out.println("The average of your two numbers is: " + average);
   }
   
-  public static void main(String[] args) {
-    Scanner keyboard = new Scanner(System.in);
-    int firstNumber = getNumberFromCommandLine(keyboard, "Enter the first number: ");
-    int secondNumber = getNumberFromCommandLine(keyboard, "Enter the second number: ");
-    keyboard.close();
+  public static void generateOutput(int firstNumber, int secondNumber) {
     outputArithmetic(firstNumber, secondNumber, '+');
     outputArithmetic(firstNumber, secondNumber, '-');
     outputArithmetic(firstNumber, secondNumber, '*');    
     outputArithmetic(firstNumber, secondNumber, '/');    
     outputArithmetic(firstNumber, secondNumber, '%');
     outputAverage(firstNumber, secondNumber);
+  }
+  
+  public static void main(String[] args) {
+    Scanner keyboard = new Scanner(System.in);
+    int firstNumber = getNumberFromCommandLine(keyboard, "Enter the first number: ");
+    int secondNumber = getNumberFromCommandLine(keyboard, "Enter the second number: ");
+    keyboard.close();
+    generateOutput(firstNumber, secondNumber);
   }
   
 }
