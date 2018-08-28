@@ -72,4 +72,8 @@ public class Project01Test extends TestCase {
     runCase(5, 7);
   }
   
+  public void testMainCase3() {
+    runCase(311, 14);
+  }
+  
 }
