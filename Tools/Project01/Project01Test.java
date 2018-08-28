@@ -6,14 +6,6 @@ public class Project01Test extends TestCase {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-  private final String testString = "Enter the first number: " + System.lineSeparator()
-    + "Enter the second number: " + System.lineSeparator()
-    + "12 + 3 = 15" + System.lineSeparator()
-    + "12 - 3 = 9" + System.lineSeparator()
-    + "12 * 3 = 36"  + System.lineSeparator()
-    + "12 / 3 = 4"  + System.lineSeparator()
-    + "12 % 3 = 0" + System.lineSeparator()
-    + "The average of your two numbers is: 7" + System.lineSeparator();
 
   public static String outputArithmetic(int firstVal, int secondVal, char operator) {
     int result = 0;
