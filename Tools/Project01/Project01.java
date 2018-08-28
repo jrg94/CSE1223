@@ -2,9 +2,8 @@ import java.util.Scanner;
 
 public class Project01 {
   
-  public static int getNumberFromCommandLine(String request) {
+  public static int getNumberFromCommandLine(Scanner keyboard, String request) {
     System.out.println(request);
-    Scanner keyboard = new Scanner(System.in);
     int num = Integer.parseInt(keyboard.nextLine());
     return num;
   }
@@ -26,7 +25,7 @@ public class Project01 {
         result = firstVal / secondVal;
         break;
       case '%':
-        result = firstVal / secondVal;
+        result = firstVal % secondVal;
         break;
       default: throw new ArithmeticException();
     }
@@ -34,10 +33,22 @@ public class Project01 {
     System.out.println(firstVal + " " + operator + " " + secondVal + " = " + result);
   }
   
+  public static void outputAverage(int firstVal, int secondVal) {
+    int average = (firstVal + secondVal) / 2;
+    System.out.println("The average of your two numbers is: " + average);
+  }
+  
   public static void main(String[] args) {
-    int firstNumber = getNumberFromCommandLine("Enter the first number: ");
-    int secondNumber = getNumberFromCommandLine("Enter the first number: ");
+    Scanner keyboard = new Scanner(System.in);
+    int firstNumber = getNumberFromCommandLine(keyboard, "Enter the first number: ");
+    int secondNumber = getNumberFromCommandLine(keyboard, "Enter the second number: ");
+    keyboard.close();
     outputArithmetic(firstNumber, secondNumber, '+');
+    outputArithmetic(firstNumber, secondNumber, '-');
+    outputArithmetic(firstNumber, secondNumber, '*');    
+    outputArithmetic(firstNumber, secondNumber, '/');    
+    outputArithmetic(firstNumber, secondNumber, '%');
+    outputAverage(firstNumber, secondNumber);
   }
   
 }
