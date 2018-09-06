@@ -13,9 +13,9 @@ Each project folder contains a single JUnit source file for testing solutions.
 To use one of the test files, I typically download all student student submissions, unzip the folder, and place the 
 JUnit file at the top-level. From there, I launch [Dr. Java][1] and drop the JUnit file into the editor.
 
-To grade, I typically open each solution and look it over for style. Then, I compile their solution and hit test.
-At that point, you should see either green glowing bars indicating successful testing or red glowing bars
-indicating failed tests.
+To grade, I typically open one solution at a time solution and look each one over for style. 
+Then, I compile each solution and hit test. At that point, I'll see either green glowing 
+bars indicating successful testing or red glowing bars indicating failed tests.
 
 Unfortunately, failed tests are harder to diagnose since my solutions do not handle the use of print vs.
 println in conjuction with scanner very well. In other words, the following will typically cause problems
