@@ -27,7 +27,7 @@ System.out.print("Tell me your name: ");
 String name = in.nextLine();
 ```
 
-vs.
+Meanwhile, the following will not cause me any issues:
 
 ```
 Scanner in = new Scanner(System.in)
