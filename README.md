@@ -45,7 +45,8 @@ the strings that way. Of course, that allows improper solutions to pass some tes
 I want to handle this.
 
 I would prefer if the projects had more objective outcomes. Having a program output a string is a bit tedious 
-and requires a lot of human judgment. In fact, I already have to use reflection to deal with package issues.
+and requires a lot of human judgment. In fact, I already have to use reflection to deal with package issues and 
+trimming to handle new line issues at the end of output.
 
 Oh well! These get the job done.
 
