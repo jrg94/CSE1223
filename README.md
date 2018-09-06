@@ -15,7 +15,7 @@ JUnit file at the top-level. From there, I launch [Dr. Java][1] and drop the JUn
 
 To grade, I typically open one solution at a time and look them over for style. 
 Then, I compile each solution and hit test. At that point, I'll see either green glowing 
-bars indicating successful testing or red glowing bars indicating failed tests.
+bars indicating successful testing or red glowing bars indicating failed testing.
 
 Unfortunately, failed tests are harder to diagnose since my solutions do not handle the use of print vs.
 println in conjuction with scanner very well. In other words, the following will typically cause problems
