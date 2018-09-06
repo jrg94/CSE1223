@@ -32,11 +32,13 @@ public class Project02Test {
    * Generates the solution for testing.
    */
   public String buildSolution(String fullString, String substring, int position, String replacement) {
+    int substringStart = fullString.indexOf(substring);
     String[] solutionList = {
       "Enter a long string: ",
       "Enter a substring: ",
       "Length of your string: " + fullString.length(),
-      "Length of your substring: " + substring.length()
+      "Length of your substring: " + substring.length(),
+      "Starting position of your substring in string: " + substringStart
     };
     String solution = buildLines(solutionList);
     return solution;
