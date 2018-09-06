@@ -28,6 +28,13 @@ public class Project02 {
     System.out.println("String before your substring: " + beforeSubstring);
     System.out.println("String after your substring: " + afterSubstring);
     System.out.println("Enter a position between 0 and " + fullString.length() + ":");
+    int position = in.nextInt();
+    System.out.println("The character at position " + position + " is " + fullString.charAt(position));
+    System.out.println("Enter a replacement string: ");
+    in.nextLine();
+    String replacementString = in.nextLine();
+    String replacedString = beforeSubstring + replacementString + afterSubstring;
+    System.out.println("Your new string is: " + replacedString);
   }
    
 }
