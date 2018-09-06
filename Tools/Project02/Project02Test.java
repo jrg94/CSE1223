@@ -128,11 +128,17 @@ public class Project02Test {
     assertEquals(solution.trim(), outContent.toString().trim());
   }
   
+  /**
+   * Tests the replacement of a word
+   */
   @Test
   public void testMain01() {
     runCase("The quick brown fox jumped over the lazy dog", "jumped", 18, "leaped");
   }
   
+  /**
+   * Tests the replacement of a partial word
+   */
   @Test
   public void testMain02() {
     runCase("Friends, Romans, countrymen, lend me your ears", "try", 21, "catch");
