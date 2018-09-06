@@ -1,19 +1,24 @@
-import junit.framework.TestCase;
+import static org.junit.Assert.*;
+import org.junit.Before;
+import org.junit.After;
+import org.junit.Test;
+import java.io.*;
+import java.lang.reflect.*;
 
-/**
- * A JUnit test case class.
- * Every method starting with the word "test" will be called when running
- * the test with JUnit.
- */
-public class Project02Test extends TestCase {
+public class Project02Test {
   
-  /**
-   * A test method.
-   * (Replace "X" with a name describing the test.  You may write as
-   * many "testSomething" methods in this class as you wish, and each
-   * one will be called when running JUnit over this class.)
-   */
-  public void testX() {
+  private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
+  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+  
+  @Before
+  public void setUp() {
+    System.setOut(new PrintStream(outContent));
+    System.setErr(new PrintStream(errContent));
   }
   
+  @After
+  public void tearDown() {
+    System.setIn(System.in);
+    System.setOut(System.out);
+  }
 }
