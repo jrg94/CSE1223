@@ -23,7 +23,11 @@ public class Project02 {
     System.out.println("Length of your substring: " + substring.length());
     int substringStart = fullString.indexOf(substring);
     System.out.println("Starting position of your substring in string: " + substringStart);
-    System.out.println("String before your substring: " + fullString.substring(0, substringStart));
+    String beforeSubstring = fullString.substring(0, substringStart);
+    String afterSubstring = fullString.substring(substringStart + substring.length(), fullString.length());
+    System.out.println("String before your substring: " + beforeSubstring);
+    System.out.println("String after your substring: " + afterSubstring);
+    System.out.println("Enter a position between 0 and " + fullString.length() + ":");
   }
    
 }
