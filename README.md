@@ -46,4 +46,6 @@ I want to handle this.
 I would prefer if the projects had more objective outcomes. Having a program output a string is a bit tedious 
 and requires a lot of human judgment. In fact, I already have to use reflection to deal with package issues.
 
+Oh well! These get the job done.
+
 [1]: http://www.drjava.org/
