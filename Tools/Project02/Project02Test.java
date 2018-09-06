@@ -5,6 +5,10 @@ import org.junit.Test;
 import java.io.*;
 import java.lang.reflect.*;
 
+/**
+ * Tests project 2 as specified by:
+ * http://web.cse.ohio-state.edu/cse1223/currentsem/projects/CSE1223Project02.html
+ */
 public class Project02Test {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -127,5 +131,10 @@ public class Project02Test {
   @Test
   public void testMain01() {
     runCase("The quick brown fox jumped over the lazy dog", "jumped", 18, "leaped");
+  }
+  
+  @Test
+  public void testMain02() {
+    runCase("Friends, Romans, countrymen, lend me your ears", "try", 21, "catch");
   }
 }
