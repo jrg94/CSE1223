@@ -18,8 +18,11 @@ public class Project02 {
     System.out.println("Enter a long string: ");
     String fullString = in.nextLine();
     System.out.println("Enter a substring: ");
-    String subString = in.nextLine();
-    
+    String substring = in.nextLine();
+    System.out.println("Length of your string: " + fullString.length());
+    System.out.println("Length of your substring: " + substring.length());
+    int substringStart = fullString.indexOf(substring);
+    System.out.println("Starting position of your substring in string: " + substringStart);
   }
    
 }
