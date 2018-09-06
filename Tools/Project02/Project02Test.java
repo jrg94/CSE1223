@@ -31,18 +31,22 @@ public class Project02Test {
   /**
    * Generates the solution for testing.
    */
-  public String buildSolution(String longString, String substring, int position, String replacement) {
-    StringBuilder sb = new StringBuilder();
-    sb.append("Enter a long string: ");
-    sb.append("Enter a substring: ");
-    return sb.toString();
+  public String buildSolution(String fullString, String substring, int position, String replacement) {
+    String[] solutionList = {
+      "Enter a long string: ",
+      "Enter a substring: ",
+      "Length of your string: " + fullString.length(),
+      "Length of your substring: " + substring.length()
+    };
+    String solution = buildLines(solutionList);
+    return solution;
   }
   
   /**
    * Constructs user input for testing.
    */
-  public String constructInput(String longString, String substring, int position, String replacement) {
-    return buildLines(longString, substring, Integer.toString(position), replacement);
+  public String constructInput(String fullString, String substring, int position, String replacement) {
+    return buildLines(fullString, substring, Integer.toString(position), replacement);
   }
   
   /**
