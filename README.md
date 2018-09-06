@@ -1,6 +1,7 @@
-# CSE1223
+# CSE 1223
 
-OSU's Intro to Java Course for Instructors
+Welcome to the homework test repo for OSU's programming Java course. In this repo, you'll find various
+JUnit files for testing project solutions.
 
 ## Navigation
 
