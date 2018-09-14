@@ -38,36 +38,85 @@ public class Project03Test {
     System.setOut(System.out);
   }
   
-  /**
-   * Generates the solution for testing.
-   */
-  public String buildSolution(String fullString, String substring, int position, String replacement) {
-    int substringStart = fullString.indexOf(substring);
-    String beforeSubstring = fullString.substring(0, substringStart);
-    String afterSubstring = fullString.substring(substringStart + substring.length(), fullString.length());
-    String replacedString = beforeSubstring + replacement + afterSubstring;
-    String[] solutionList = {
-      "Enter a long string: ",
-      "Enter a substring: ",
-      "Length of your string: " + fullString.length(),
-      "Length of your substring: " + substring.length(),
-      "Starting position of your substring in string: " + substringStart,
-      "String before your substring: " + beforeSubstring,
-      "String after your substring: " + afterSubstring,
-      "Enter a position between 0 and " + (fullString.length() - 1) + ":",
-      "The character at position " + position + " is " + fullString.charAt(position),
-      "Enter a replacement string: ",
-      "Your new string is: " + replacedString
-    };
-    String solution = buildLines(solutionList);
-    return solution;
+  private static class MathData {
+    private int result;
+    private String equation;
+    public MathData(int result, String equation) {
+      this.result = result;
+      this.equation = equation;
+    }
+    public int getResult() {
+      return this.result;
+    }
+    public String getEquation() {
+      return this.equation;
+    }
+  }
+  
+  private static MathData[] generateAllMathData(int first, int second) {
+    MathData addition = generateMathData(first, second, '+');
+    MathData multiplication = generateMathData(first, second, '*');    
+    MathData division = generateMathData(first, second, '/');    
+    MathData remainder = generateMathData(first, second, '%');
+    return new MathData[] {addition, multiplication, division, remainder};
   }
   
   /**
-   * Constructs user input for testing.
+   * Returns a MathData object.
+   * 
+   * @param firstVal some integer value
+   * @param secondVal some integer value
+   * @param operator some binary arithmetic operator (+, -, *, /, %)
+   * @return a String in the form "firstVal operator secondVal = result"
    */
-  public String constructInput(String fullString, String substring, int position, String replacement) {
-    return buildLines(fullString, substring, Integer.toString(position), replacement);
+  private static MathData generateMathData(int firstVal, int secondVal, char operator) {
+    int result = 0;
+    
+    switch (operator) {
+      case '+':
+        result = firstVal + secondVal;
+        break;
+      case '-':
+        result = firstVal - secondVal;
+        break;
+      case '*':
+        result = firstVal * secondVal;
+        break;
+      case '/':
+        result = firstVal / secondVal;
+        break;
+      case '%':
+        result = firstVal % secondVal;
+        break;
+      default: throw new ArithmeticException();
+    }
+    
+    String equation = firstVal + " " + operator + " " + secondVal + " = " + System.lineSeparator();
+    
+    return new MathData(result, equation);
+  }
+  
+  /**
+   * Generates the solution for testing.
+   */
+  public String buildSolution(String name, int first, int second, int guess) {
+    MathData[] equations = generateAllMathData(first, second);
+    ArrayList<String> solutionList = new ArrayList<String>();
+    solutionList.add("Enter your name: ");
+    solutionList.add("Welcome " + name + "! Please answer the following questions:");
+    int correct = 0;
+    for (MathData equation : equations) {
+      solutionList.add(equation.getEquation());
+      if (equation.getResult() == guess) {
+        solutionList.add("Correct!");
+        correct++;
+      } else {
+        solutionList.add("Wrong!");
+      }
+    }
+    solutionList.add("You got " + correct + " correct answers");
+    solutionList.add("That's " + ((double) correct) / equations.length * 100 + "%");
+    return String.join("\n", solutionList);
   }
   
   /**
@@ -129,14 +178,14 @@ public class Project03Test {
    */
   public ArrayList<String> getTestClasses() {
     ArrayList<String> toTest = new ArrayList<String>();
-    toTest.add("osu.cse1223.Project02"); // Typical package
-    toTest.add("osu.cse1223.project02");
-    toTest.add("osu.cse1223.project2");
-    toTest.add("cse1223.Project02");    
-    toTest.add("cse1223.project02");
-    toTest.add("Project02"); // Typical packageless
-    toTest.add("project02"); // Typical unconventional packageless 
-    toTest.add("project2"); // Atypical unconventional packageless
+    toTest.add("osu.cse1223.Project03"); // Typical package
+    toTest.add("osu.cse1223.project03");
+    toTest.add("osu.cse1223.project3");
+    toTest.add("cse1223.Project03");    
+    toTest.add("cse1223.project03");
+    toTest.add("Project03"); // Typical packageless
+    toTest.add("project03"); // Typical unconventional packageless 
+    toTest.add("project3"); // Atypical unconventional packageless
     return toTest;
   }
   
@@ -148,31 +197,48 @@ public class Project03Test {
     return input.replace("\n", "").replaceAll("\\s+", "");
   }
   
+  private int[] getIntegers(String output) {
+    int i = output.indexOf("+");
+    int first = Integer.parseInt(output.substring(i - 3, i).trim());
+    int second = Integer.parseInt(output.substring(i + 1, i + 4).trim());
+    return new int[] {first, second};
+  }
+  
   /**
    * A helper method which allows us to rapidly build test cases.
    */
-  public void runCase(String fullString, String substring, int position, String replacement) {
-    String input = constructInput(fullString, substring, position, replacement);
+  public void runCase(String name, int guess) {
+    String guessString = Integer.toString(guess);
+    String input = buildLines(name, guessString, guessString, guessString, guessString);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
     runMain(getTestClasses());
-    String solution = buildSolution(fullString, substring, position, replacement);
+    int[] firstAndSecond = getIntegers(outContent.toString());
+    String solution = buildSolution(name, firstAndSecond[0], firstAndSecond[1], guess);
     assertEquals(reduceString(solution), reduceString(outContent.toString()));
   }
   
   /**
-   * Tests the replacement of a word
+   * Tests a random guess of 2 for every answer
    */
   @Test
   public void testMain01() {
-    runCase("The quick brown fox jumped over the lazy dog", "jumped", 18, "leaped");
+    runCase("Jeremy", 2);
   }
   
   /**
-   * Tests the replacement of a partial word
+   * Tests a random guess of 5 for every answer
    */
   @Test
   public void testMain02() {
-    runCase("Friends, Romans, countrymen, lend me your ears", "try", 21, "catch");
+    runCase("Anastasia", 5);
+  }
+  
+  /**
+   * Tests a random guess of 0 for every answer
+   */
+  @Test
+  public void testMain03() {
+    runCase("Anastasia", 0);
   }
 }
