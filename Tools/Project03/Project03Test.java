@@ -38,21 +38,47 @@ public class Project03Test {
     System.setOut(System.out);
   }
   
+  /**
+   * An inner class used for storing math data.
+   */
   private static class MathData {
     private int result;
     private String equation;
+    
+    /**
+     * The MathData constructor.
+     */
     public MathData(int result, String equation) {
       this.result = result;
       this.equation = equation;
     }
+    
+    /**
+     * Gets the result of the equation.
+     * 
+     * @return the result of the equation as an integer
+     */
     public int getResult() {
       return this.result;
     }
+    
+    /**
+     * Gets the equation.
+     * 
+     * @return the equation as a string
+     */
     public String getEquation() {
       return this.equation;
     }
   }
   
+  /**
+   * Generates 4 MathData objects.
+   * 
+   * @param first the first value of an equation
+   * @param second the second value of an equation
+   * @return an array of 4 MathData objects
+   */
   private static MathData[] generateAllMathData(int first, int second) {
     MathData addition = generateMathData(first, second, '+');
     MathData multiplication = generateMathData(first, second, '*');    
@@ -98,6 +124,11 @@ public class Project03Test {
   
   /**
    * Generates the solution for testing.
+   * 
+   * @param name the user's name
+   * @param first the first number in each equation
+   * @param second the second number in each equation
+   * @return the expected solution string 
    */
   public String buildSolution(String name, int first, int second, int guess) {
     MathData[] equations = generateAllMathData(first, second);
