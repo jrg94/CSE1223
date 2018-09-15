@@ -152,6 +152,9 @@ public class Project03Test {
   
   /**
    * Takes a set of inputs and joins them with newlines.
+   * 
+   * @param inputs an variable length collection of strings
+   * @return the input collection as a string separated by newlines
    */
   public String buildLines(String ... inputs) {
     StringBuilder sb = new StringBuilder();
@@ -163,7 +166,10 @@ public class Project03Test {
   }
   
   /**
-   * Returns the main method from the proper class
+   * A recursive method which returns the main method from the proper class.
+   * 
+   * @param toTest an ArrayList of strings to test
+   * @return the class object
    */
   private static Class<?> getMain(ArrayList<String> toTest) {
     Class<?> cls;
@@ -183,7 +189,9 @@ public class Project03Test {
   }
   
   /**
-   * Runs the main method of the test class
+   * Runs the main method of the test class.
+   * 
+   * @param toTest an array of strings to test
    */
   private static void runMain(ArrayList<String> toTest) {
     Class<?> cls = getMain(toTest);
@@ -206,6 +214,8 @@ public class Project03Test {
   /**
    * Generates a list of test classes.
    * Add test cases to this list as you find them.
+   * 
+   * @return an ArrayList of strings to test
    */
   public ArrayList<String> getTestClasses() {
     ArrayList<String> toTest = new ArrayList<String>();
@@ -223,11 +233,21 @@ public class Project03Test {
   /**
    * Removes all newlines and spaces, so strings can be
    * compared on a content basis.
+   * 
+   * @param input an input string
+   * @return an input string stripped of all spaces and newlines
    */
   public String reduceString(String input) {
     return input.replace("\n", "").replaceAll("\\s+", "");
   }
   
+  /**
+   * Naively parses the users solution for a pair of numbers
+   * surrounding the addition equation. 
+   * 
+   * @param output the users solution
+   * @return an array containing the first and second number from parsing
+   */
   private int[] getIntegers(String output) {
     int i = output.indexOf("+");
     int first = Integer.parseInt(output.substring(i - 3, i).trim());
@@ -237,6 +257,9 @@ public class Project03Test {
   
   /**
    * A helper method which allows us to rapidly build test cases.
+   * 
+   * @param name the user's name
+   * @param guess our guess for each question
    */
   public void runCase(String name, int guess) {
     String guessString = Integer.toString(guess);
