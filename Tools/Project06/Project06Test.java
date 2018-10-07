@@ -143,12 +143,31 @@ public class Project06Test {
   }
 
   /////////////////// Implementation //////////////////////////////////
+  
+  private int getExpectedCheckDigit(String creditCardNumber) {
+    int sum = 0;
+    for(int i = creditCardNumber.length() - 2; i > 0; i--) {
+      int curr = Integer.parseInt(creditCardNumber.charAt(i));
+      if (i % 2 == 0) {
+        curr *= 2;
+        if (curr > 10) {
+          curr _= 9;
+        }
+      } 
+      sum += curr;
+    }
+    return 10 - (sum % 10);
+  }
 
   /**
    * Generates the expected output for testing.
    */
-  private String buildSolution(String creditCardNumber) {
+  private String buildSolution(String creditCardNumbers...) {
     ArrayList<String> solutionList = new ArrayList<String>();
+    solutionList("Enter a credit card number (enter a blank line to quit):");
+    solutionList("Check digit should be: ");
+    solutionList("Check digit is: 2");
+    solutionList("Number is not valid");
     // TODO: build solution
     return String.join("\n", solutionList);
   }
@@ -156,10 +175,8 @@ public class Project06Test {
   /**
    * A helper method which allows us to rapidly build test cases.
    */
-  private void runCase(String creditCardNumber) {
-    // Feed some input to scanner
-    String[] numbers = IntStream.rangeClosed(1, 200).mapToObj(String::valueOf).toArray(String[]::new);
-    String input = buildLines(numbers);
+  private void runCase(String creditCardNumbers...) {
+    String input = buildLines(creditCardNumbers);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
     
@@ -168,7 +185,7 @@ public class Project06Test {
     
     // Test expected output to output
     String output = outContent.toString();
-    String expectedOutput = buildSolution(creditCardNumber);
+    String expectedOutput = buildSolution(creditCardNumbers);
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
 
@@ -177,6 +194,6 @@ public class Project06Test {
    */
   @Test
   public void testValidCreditCard() {
-    runCase("13415623413");
+    runCase("13415623413", "\n");
   }
 }
