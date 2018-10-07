@@ -159,7 +159,7 @@ public class Project06Test {
   
   private int getExpectedCheckDigit(String creditCardNumber) {
     int sum = 0;
-    for(int i = creditCardNumber.length() - 2; i > 0; i--) {
+    for(int i = creditCardNumber.length() - 2; i > -1; i--) {
       int curr = convertCharToInt(creditCardNumber.charAt(i));
       if (i % 2 == 0) {
         curr *= 2;
