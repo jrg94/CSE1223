@@ -210,10 +210,26 @@ public class Project06Test {
   }
   
   /**
-   * Tests the basics.
+   * Tests a valid credit card.
    */
   @Test
   public void testValidCreditCard() {
-    runCase("13415623413", "\n");
+    runCase("5457623898234113", "\n");
+  }
+  
+  /**
+   * Tests an invalid credit card.
+   */
+  @Test
+  public void testInvalidCreditCard() {
+    runCase("5457623898234112", "\n");
+  }
+  
+  /**
+   * Tests an incomplete credit card.
+   */
+  @Test
+  public void testIncompleteCreditCard() {
+    runCase("545762389823", "\n");
   }
 }
