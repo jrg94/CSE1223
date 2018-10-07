@@ -178,12 +178,16 @@ public class Project06Test {
   private String buildSolution(String... creditCardNumbers) {
     ArrayList<String> solutionList = new ArrayList<String>();
     for (String creditCardNumber : creditCardNumbers) {
-      int expectedCheckDigit = getExpectedCheckDigit(creditCardNumber);
-      int actualCheckDigit = convertCharToInt(creditCardNumber.charAt(15));
-      solutionList.add("Enter a credit card number (enter a blank line to quit):");
-      solutionList.add("Check digit should be: " + expectedCheckDigit);
-      solutionList.add("Check digit is: " + actualCheckDigit);
-      solutionList.add(getValidString(expectedCheckDigit, actualCheckDigit));
+      if (creditCardNumber.length() != 16) {
+        solutionList.add("ERROR! Number MUST have exactly 16 digits")
+      } else {
+          int expectedCheckDigit = getExpectedCheckDigit(creditCardNumber);
+          int actualCheckDigit = convertCharToInt(creditCardNumber.charAt(15));
+          solutionList.add("Enter a credit card number (enter a blank line to quit):");
+          solutionList.add("Check digit should be: " + expectedCheckDigit);
+          solutionList.add("Check digit is: " + actualCheckDigit);
+          solutionList.add(getValidString(expectedCheckDigit, actualCheckDigit));
+        }
     }
     return String.join("\n", solutionList);
   }
