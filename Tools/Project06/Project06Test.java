@@ -17,10 +17,10 @@ import java.util.stream.*;
  * care that the solution has all the expected content.
  */
 public class Project06Test {
-
+  
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
-
+  
   /**
    * Sets input and output streams to local print streams for analysis.
    */
@@ -29,7 +29,7 @@ public class Project06Test {
     System.setOut(new PrintStream(outContent));
     System.setErr(new PrintStream(errContent));
   }
-
+  
   /**
    * Sets input and output streams back to normal.
    */
@@ -38,7 +38,7 @@ public class Project06Test {
     System.setIn(System.in);
     System.setOut(System.out);
   }
-
+  
   /**
    * Takes a set of inputs and joins them with newlines.
    *
@@ -53,7 +53,7 @@ public class Project06Test {
     }
     return sb.toString();
   }
-
+  
   /**
    * A recursive method which returns the main method from the proper class.
    *
@@ -76,7 +76,7 @@ public class Project06Test {
     }
     return cls;
   }
-
+  
   /**
    * Runs the main method of the test class.
    *
@@ -99,7 +99,7 @@ public class Project06Test {
       System.exit(1);
     }
   }
-
+  
   /**
    * Generates a list of test classes.
    * Add test cases to this list as you find them.
@@ -130,7 +130,7 @@ public class Project06Test {
     }
     return toTest;
   }
-
+  
   /**
    * Removes all newlines and spaces, so strings can be
    * compared on a content basis.
@@ -141,13 +141,26 @@ public class Project06Test {
   private String reduceString(String input) {
     return input.replace("\n", "").replaceAll("\\s+", "").toLowerCase();
   }
-
+  
   /////////////////// Implementation //////////////////////////////////
+  
+  private int convertCharToInt(char someChar) {
+    return (int) someChar - 48;
+  }
+  
+  private String getValidString(int expectedCheckDigit, int actualCheckDigit) {
+    boolean verified = expectedCheckDigit == actualCheckDigit;
+    if (verified) {
+      return "Number is valid";
+    } else {
+      return "Number is not valid";
+    }
+  }
   
   private int getExpectedCheckDigit(String creditCardNumber) {
     int sum = 0;
     for(int i = creditCardNumber.length() - 2; i > 0; i--) {
-      int curr = (int) creditCardNumber.charAt(i) - 48;
+      int curr = convertCharToInt(creditCardNumber.charAt(i));
       if (i % 2 == 0) {
         curr *= 2;
         if (curr > 10) {
@@ -158,17 +171,20 @@ public class Project06Test {
     }
     return 10 - (sum % 10);
   }
-
+  
   /**
    * Generates the expected output for testing.
    */
   private String buildSolution(String... creditCardNumbers) {
     ArrayList<String> solutionList = new ArrayList<String>();
-    solutionList.add("Enter a credit card number (enter a blank line to quit):");
-    solutionList.add("Check digit should be: ");
-    solutionList.add("Check digit is: 2");
-    solutionList.add("Number is not valid");
-    // TODO: build solution
+    for (String creditCardNumber : creditCardNumbers) {
+      int expectedCheckDigit = getExpectedCheckDigit(creditCardNumber);
+      int actualCheckDigit = convertCharToInt(creditCardNumber.charAt(15));
+      solutionList.add("Enter a credit card number (enter a blank line to quit):");
+      solutionList.add("Check digit should be: " + expectedCheckDigit);
+      solutionList.add("Check digit is: " + actualCheckDigit);
+      solutionList.add(getValidString(expectedCheckDigit, actualCheckDigit));
+    }
     return String.join("\n", solutionList);
   }
   
@@ -188,7 +204,7 @@ public class Project06Test {
     String expectedOutput = buildSolution(creditCardNumbers);
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
-
+  
   /**
    * Tests the basics.
    */
