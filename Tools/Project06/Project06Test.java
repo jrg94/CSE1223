@@ -232,4 +232,12 @@ public class Project06Test {
   public void testIncompleteCreditCard() {
     runCase("545762389823", "\n");
   }
+  
+  /**
+   * Tests multiple credit cards.
+   */
+  @Test
+  public void testMultipleCreditCards() {
+    runCase("5457623898234113", "5555555555554444", "\n");
+  }
 }
