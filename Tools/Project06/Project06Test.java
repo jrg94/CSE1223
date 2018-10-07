@@ -147,11 +147,11 @@ public class Project06Test {
   private int getExpectedCheckDigit(String creditCardNumber) {
     int sum = 0;
     for(int i = creditCardNumber.length() - 2; i > 0; i--) {
-      int curr = Integer.parseInt(creditCardNumber.charAt(i));
+      int curr = (int) creditCardNumber.charAt(i) - 48;
       if (i % 2 == 0) {
         curr *= 2;
         if (curr > 10) {
-          curr _= 9;
+          curr -= 9;
         }
       } 
       sum += curr;
@@ -162,12 +162,12 @@ public class Project06Test {
   /**
    * Generates the expected output for testing.
    */
-  private String buildSolution(String creditCardNumbers...) {
+  private String buildSolution(String... creditCardNumbers) {
     ArrayList<String> solutionList = new ArrayList<String>();
-    solutionList("Enter a credit card number (enter a blank line to quit):");
-    solutionList("Check digit should be: ");
-    solutionList("Check digit is: 2");
-    solutionList("Number is not valid");
+    solutionList.add("Enter a credit card number (enter a blank line to quit):");
+    solutionList.add("Check digit should be: ");
+    solutionList.add("Check digit is: 2");
+    solutionList.add("Number is not valid");
     // TODO: build solution
     return String.join("\n", solutionList);
   }
@@ -175,7 +175,7 @@ public class Project06Test {
   /**
    * A helper method which allows us to rapidly build test cases.
    */
-  private void runCase(String creditCardNumbers...) {
+  private void runCase(String... creditCardNumbers) {
     String input = buildLines(creditCardNumbers);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
