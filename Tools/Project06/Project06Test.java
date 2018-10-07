@@ -145,7 +145,7 @@ public class Project06Test {
   /////////////////// Implementation //////////////////////////////////
   
   private int convertCharToInt(char someChar) {
-    return (int) someChar - 48;
+    return ((int) someChar) - 48;
   }
   
   private String getValidString(int expectedCheckDigit, int actualCheckDigit) {
@@ -163,7 +163,7 @@ public class Project06Test {
       int curr = convertCharToInt(creditCardNumber.charAt(i));
       if (i % 2 == 0) {
         curr *= 2;
-        if (curr > 10) {
+        if (curr > 9) {
           curr -= 9;
         }
       } 
@@ -178,12 +178,14 @@ public class Project06Test {
   private String buildSolution(String... creditCardNumbers) {
     ArrayList<String> solutionList = new ArrayList<String>();
     for (String creditCardNumber : creditCardNumbers) {
-      if (creditCardNumber.length() != 16) {
+      solutionList.add("Enter a credit card number (enter a blank line to quit):");
+      if (creditCardNumber.equals("\n")) {
+        solutionList.add("Goodbye!");
+      } else if (creditCardNumber.length() != 16) {
         solutionList.add("ERROR! Number MUST have exactly 16 digits");
       } else {
         int expectedCheckDigit = getExpectedCheckDigit(creditCardNumber);
         int actualCheckDigit = convertCharToInt(creditCardNumber.charAt(15));
-        solutionList.add("Enter a credit card number (enter a blank line to quit):");
         solutionList.add("Check digit should be: " + expectedCheckDigit);
         solutionList.add("Check digit is: " + actualCheckDigit);
         solutionList.add(getValidString(expectedCheckDigit, actualCheckDigit));
