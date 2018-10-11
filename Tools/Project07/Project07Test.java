@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.After;
 import org.junit.Test;
 import java.io.*;
@@ -8,10 +9,10 @@ import java.util.*;
 import java.util.stream.*;
 
 /**
- * Tests project 5 as specified by:
- * http://web.cse.ohio-state.edu/cse1223/currentsem/projects/CSE1223Project05.html
+ * Tests project 7 as specified by:
+ * http://web.cse.ohio-state.edu/cse1223/currentsem/projects/CSE1223Project07.html
  *
- * This test file verifies that the Project 5 solution passes on the basis of
+ * This test file verifies that the Project 7 solution passes on the basis of
  * content rather than structure. In other words, we don't care if the output
  * doesn't structurally look exactly like the expected output. However, we do
  * care that the solution has all the expected content.
@@ -20,6 +21,12 @@ public class Project07Test {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private static final int PROJECT_NUMBER = 7;
+  private static Class<?> cls = null;
+  
+  @BeforeClass
+  public static void setUpOnce() {
+    cls = getClass(getTestClasses(PROJECT_NUMBER));
+  }
   
   /**
    * Sets input and output streams to local print streams for analysis.
@@ -27,7 +34,6 @@ public class Project07Test {
   @Before
   public void setUp() {
     System.setOut(new PrintStream(outContent));
-    
   }
   
   /**
@@ -44,7 +50,7 @@ public class Project07Test {
    * @param inputs an variable length collection of strings
    * @return the input collection as a string separated by newlines
    */
-  private String buildLines(String ... inputs) {
+  private static String buildLines(String ... inputs) {
     StringBuilder sb = new StringBuilder();
     for (String input: inputs) {
       sb.append(input);
@@ -60,17 +66,18 @@ public class Project07Test {
    * @return the class object
    */
   private static Class<?> getClass(ArrayList<String> toTest) {
-    Class<?> cls;
-    try {
-      cls = Class.forName(toTest.get(0));
-    } catch (ClassNotFoundException e) {
-      System.err.println("Failed to find the class: " + toTest.get(0));
-      toTest.remove(0);
-      if (!toTest.isEmpty()) {
-        cls = getClass(toTest);
-      } else {
-        cls = null;
-        System.exit(1);
+    if (cls == null) {
+      try {
+        cls = Class.forName(toTest.get(0));
+      } catch (ClassNotFoundException e) {
+        System.err.println("Failed to find the class: " + toTest.get(0));
+        toTest.remove(0);
+        if (!toTest.isEmpty()) {
+          cls = getClass(toTest);
+        } else {
+          cls = null;
+          System.exit(1);
+        }
       }
     }
     return cls;
@@ -104,11 +111,10 @@ public class Project07Test {
    *
    * @param toTest an array of strings to test
    */
-  private static void runMain(ArrayList<String> toTest) {
-    Class<?> cls = getClass(toTest);
+  private void runMain(ArrayList<String> toTest) {
     Class<?>[] parameters = {String[].class};
     Object[] args = null;
-    runStaticMethod(cls, "main", parameters, args);
+    runStaticMethod(this.cls, "main", parameters, args);
   }
   
   /**
@@ -118,7 +124,7 @@ public class Project07Test {
    * @param project the current project number
    * @return an ArrayList of strings to test
    */
-  private ArrayList<String> getTestClasses(int project) {
+  private static ArrayList<String> getTestClasses(int project) {
     ArrayList<String> toTest = new ArrayList<String>();
     toTest.add("osu.cse1223.Project%1$s");
     toTest.add("osu.cse1223.Project%1$sa");
@@ -184,10 +190,9 @@ public class Project07Test {
    * A helper method for testing getRoll.
    */
   private int runGetRollCase() {
-    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = null;
     Object[] args = null;
-    return (Integer) runStaticMethod(cls, "getRoll", parameters, args);
+    return (Integer) runStaticMethod(this.cls, "getRoll", parameters, args);
   }
   
   /**
@@ -197,10 +202,9 @@ public class Project07Test {
     String input = buildLines(bets);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
-    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = {Scanner.class, int.class};
     Object[] args = {new Scanner(System.in), pool};
-    return (Integer) runStaticMethod(cls, "getBet", parameters, args);
+    return (Integer) runStaticMethod(this.cls, "getBet", parameters, args);
   }
   
   /**
@@ -210,17 +214,18 @@ public class Project07Test {
     String input = buildLines(selections);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
-    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = {Scanner.class};
     Object[] args = {new Scanner(System.in)};
-    return (Character) runStaticMethod(cls, "getHighLow", parameters, args);
+    return (Character) runStaticMethod(this.cls, "getHighLow", parameters, args);
   }
   
+  /**
+   * A helper method 
+   */
   private int runDetermineWinnings(char highLow, int bet, int roll) {
-    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = {char.class, int.class, int.class};
     Object[] args = {highLow, bet, roll};
-    return (Integer) runStaticMethod(cls, "determineWinnings", parameters, args);
+    return (Integer) runStaticMethod(this.cls, "determineWinnings", parameters, args);
   }
   
   @Test
