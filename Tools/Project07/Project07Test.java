@@ -79,12 +79,13 @@ public class Project07Test {
   /**
    * A generic method for running static methods using reflection.
    */
-  public static void runStaticMethod(Class<?> cls, String methodName, Class<?>[] parameters, Object[] args) {
+  public static Object runStaticMethod(Class<?> cls, String methodName, Class<?>[] parameters, Object[] args) {
+    Object returnValue = null;
     try {
       Method meth = cls.getDeclaredMethod(methodName, parameters);
       meth.setAccessible(true);
       String[] params = null;
-      meth.invoke(null, args);
+      returnValue = meth.invoke(null, args);
     } catch (NoSuchMethodException e) {
       System.err.println("No method " + methodName + " for class " + cls.getName());
       System.exit(1);
@@ -95,6 +96,7 @@ public class Project07Test {
       System.err.println("Can't target method " + methodName);
       System.exit(1);
     }
+    return returnValue;
   }
   
   /**
@@ -181,25 +183,26 @@ public class Project07Test {
   /**
    * A helper method for testing getRoll.
    */
-  private void runGetRollCase() {
+  private int runGetRollCase() {
     Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = null;
     Object[] args = null;
-    runStaticMethod(cls, "getRoll", parameters, args);
+    return (Integer) runStaticMethod(cls, "getRoll", parameters, args);
   }
   
   /**
    * A helper method for testing getBet.
    */
-  private void runGetBetCase(int pool) {
+  private int runGetBetCase(int pool) {
     Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = {Scanner.class, int.class};
     Object[] args = {new Scanner(System.in), pool};
-    runStaticMethod(cls, "getRoll", parameters, args);
+    return (Integer) runStaticMethod(cls, "getRoll", parameters, args);
   }
   
   @Test
   public void testGetRoll() {
-    runGetRollCase();
+    int result = runGetRollCase();
+    assertTrue("getRoll returned a value out of the range: " + result, 0 <= result && result <= 6);
   }
 }
