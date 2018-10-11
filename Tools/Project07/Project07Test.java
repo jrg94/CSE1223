@@ -203,6 +203,9 @@ public class Project07Test {
     return (Integer) runStaticMethod(cls, "getBet", parameters, args);
   }
   
+  /**
+   * A helper method for testing getHighLow.
+   */
   private char runGetHighLow(String... selections) {
     String input = buildLines(selections);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
@@ -222,19 +225,36 @@ public class Project07Test {
   @Test
   public void testGetBetValid() {
     int result = runGetBetCase(100, "50");
-    assertTrue("getBet returned " + result + " when we expected 50", result == 50);
+    assertEquals(50, result);
   }
   
+  @Test
+  public void testGetBetTooBig() {
+    int result = runGetBetCase(50, "100", "75", "40");
+    assertEquals(40, result);
+  }
   
   @Test
-  public void testGetBetInvalid() {
-    int result = runGetBetCase(50, "100", "75", "40");
-    assertTrue("getBet returned " + result + " when we expected 40", result == 40);
+  public void testGetBetNegative() {
+    int result = runGetBetCase(50, "-100", "-75", "40");
+    assertEquals(40, result);
   }
   
   @Test
   public void testHighLowH() {
     char result = runGetHighLow("H");
-    assertTrue(result == 'H');
+    assertEquals('H', result);
+  }
+  
+  @Test
+  public void testHighLowS() {
+    char result = runGetHighLow("S");
+    assertEquals('S', result);
+  }
+  
+  @Test
+  public void testHighLowL() {
+    char result = runGetHighLow("L");
+    assertEquals('L', result);
   }
 }
