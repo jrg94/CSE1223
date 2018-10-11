@@ -16,7 +16,7 @@ import java.util.stream.*;
  * doesn't structurally look exactly like the expected output. However, we do
  * care that the solution has all the expected content.
  */
-public class Project06Test {
+public class Project07Test {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
@@ -165,7 +165,7 @@ public class Project06Test {
     
     // Test expected output to output
     String output = outContent.toString();
-    String expectedOutput = buildSolution(creditCardNumbers);
+    String expectedOutput = buildSolution();
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
 }
