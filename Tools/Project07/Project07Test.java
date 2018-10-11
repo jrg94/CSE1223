@@ -193,20 +193,18 @@ public class Project07Test {
   /**
    * A helper method for testing getBet.
    */
-  private int runGetBetCase(int pool, int bet) {
-    ArrayList<String> bets = new ArrayList<String>();
-    bets.add(Integer.toString(bet));
-    while (bet > pool) {
-      bet /= 2;
-      bets.add(Integer.toString(bet));
-    }
-    String input = buildLines(bets.toArray(new String[bets.size()]));
+  private int runGetBetCase(int pool, String... bets) {
+    String input = buildLines(bets);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
     Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = {Scanner.class, int.class};
     Object[] args = {new Scanner(System.in), pool};
     return (Integer) runStaticMethod(cls, "getBet", parameters, args);
+  }
+  
+  private char runGetHighLow(String... selections) {
+    return 'H';
   }
   
   @Test
@@ -217,14 +215,14 @@ public class Project07Test {
   
   @Test
   public void testGetBetValid() {
-    int result = runGetBetCase(100, 50);
-    assertTrue("getBet returned " + result + " when we expected " + 50, result == 50);
+    int result = runGetBetCase(100, "50");
+    assertTrue("getBet returned " + result + " when we expected 50", result == 50);
   }
   
   
   @Test
   public void testGetBetInvalid() {
-    int result = runGetBetCase(50, 100);
-    assertTrue("getBet returned " + result + " when we expected an error", result == 50);
+    int result = runGetBetCase(50, "100", "75", "40");
+    assertTrue("getBet returned " + result + " when we expected 40", result == 40);
   }
 }
