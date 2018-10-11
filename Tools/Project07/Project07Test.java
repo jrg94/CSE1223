@@ -204,7 +204,13 @@ public class Project07Test {
   }
   
   private char runGetHighLow(String... selections) {
-    return 'H';
+    String input = buildLines(selections);
+    InputStream inContent = new ByteArrayInputStream(input.getBytes());
+    System.setIn(inContent);
+    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
+    Class<?>[] parameters = {Scanner.class};
+    Object[] args = {new Scanner(System.in)};
+    return (Character) runStaticMethod(cls, "getHighLow", parameters, args);
   }
   
   @Test
@@ -224,5 +230,11 @@ public class Project07Test {
   public void testGetBetInvalid() {
     int result = runGetBetCase(50, "100", "75", "40");
     assertTrue("getBet returned " + result + " when we expected 40", result == 40);
+  }
+  
+  @Test
+  public void testHighLowH() {
+    char result = runGetHighLow("H");
+    assertTrue(result == 'H');
   }
 }
