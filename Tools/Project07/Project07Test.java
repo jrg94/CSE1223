@@ -20,6 +20,7 @@ public class Project07Test {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
+  private static final int PROJECT_NUMBER = 7;
   
   /**
    * Sets input and output streams to local print streams for analysis.
@@ -60,7 +61,7 @@ public class Project07Test {
    * @param toTest an ArrayList of strings to test
    * @return the class object
    */
-  private static Class<?> getMain(ArrayList<String> toTest) {
+  private static Class<?> getClass(ArrayList<String> toTest) {
     Class<?> cls;
     try {
       cls = Class.forName(toTest.get(0));
@@ -68,7 +69,7 @@ public class Project07Test {
       System.err.println("Failed to find the class: " + toTest.get(0));
       toTest.remove(0);
       if (!toTest.isEmpty()) {
-        cls = getMain(toTest);
+        cls = getClass(toTest);
       } else {
         cls = null;
         System.exit(1);
@@ -78,16 +79,13 @@ public class Project07Test {
   }
   
   /**
-   * Runs the main method of the test class.
-   *
-   * @param toTest an array of strings to test
+   * A generic method for running static methods using reflection.
    */
-  private static void runMain(ArrayList<String> toTest) {
-    Class<?> cls = getMain(toTest);
+  public static void runStaticMethod(Class<?> cls, String methodName, Class<?>[] parameters, Object[] args) {
     try {
-      Method meth = cls.getMethod("main", String[].class);
+      Method meth = cls.getMethod(methodName, parameters);
       String[] params = null;
-      meth.invoke(null, (Object) params);
+      meth.invoke(null, args);
     } catch (NoSuchMethodException e) {
       System.err.println("No method main");
       System.exit(1);
@@ -98,6 +96,18 @@ public class Project07Test {
       System.err.println("Can't target method main");
       System.exit(1);
     }
+  }
+  
+  /**
+   * Runs the main method of the test class.
+   *
+   * @param toTest an array of strings to test
+   */
+  private static void runMain(ArrayList<String> toTest) {
+    Class<?> cls = getClass(toTest);
+    Class<?>[] parameters = {String[].class};
+    Object[] args = null;
+    runStaticMethod(cls, "main", parameters, args);
   }
   
   /**
@@ -161,11 +171,18 @@ public class Project07Test {
     System.setIn(inContent);
     
     // Run student solution
-    runMain(getTestClasses(7));
+    runMain(getTestClasses(PROJECT_NUMBER));
     
     // Test expected output to output
     String output = outContent.toString();
     String expectedOutput = buildSolution();
     assertEquals(reduceString(expectedOutput), reduceString(output));
+  }
+  
+  private void runGetRoll() {
+    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
+    Class<?>[] parameters = null;
+    Object[] args = null;
+    runStaticMethod(cls, "getRoll", parameters, args);
   }
 }
