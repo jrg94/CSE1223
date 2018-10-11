@@ -19,7 +19,6 @@ import java.util.stream.*;
 public class Project07Test {
   
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
-  private final ByteArrayOutputStream errContent = new ByteArrayOutputStream();
   private static final int PROJECT_NUMBER = 7;
   
   /**
@@ -28,7 +27,7 @@ public class Project07Test {
   @Before
   public void setUp() {
     System.setOut(new PrintStream(outContent));
-    System.setErr(new PrintStream(errContent));
+
   }
   
   /**
@@ -36,7 +35,6 @@ public class Project07Test {
    */
   @After
   public void tearDown() {
-    System.setIn(System.in);
     System.setOut(System.out);
   }
   
@@ -83,17 +81,18 @@ public class Project07Test {
    */
   public static void runStaticMethod(Class<?> cls, String methodName, Class<?>[] parameters, Object[] args) {
     try {
-      Method meth = cls.getMethod(methodName, parameters);
+      Method meth = cls.getDeclaredMethod(methodName, parameters);
+      meth.setAccessible(true);
       String[] params = null;
       meth.invoke(null, args);
     } catch (NoSuchMethodException e) {
-      System.err.println("No method main");
+      System.err.println("No method " + methodName + " for class " + cls.getName());
       System.exit(1);
     } catch (IllegalAccessException e) {
-      System.err.println("Can't invoke method main");
+      System.err.println("Can't invoke method " + methodName);
       System.exit(1);
     } catch (InvocationTargetException e) {
-      System.err.println("Can't target method main");
+      System.err.println("Can't target method " + methodName);
       System.exit(1);
     }
   }
@@ -163,9 +162,9 @@ public class Project07Test {
   }
   
   /**
-   * A helper method which allows us to rapidly build test cases.
+   * A helper method for testing main.
    */
-  private void runCase() {
+  private void runMainCase() {
     String input = buildLines();
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
@@ -179,10 +178,28 @@ public class Project07Test {
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
   
-  private void runGetRoll() {
+  /**
+   * A helper method for testing getRoll.
+   */
+  private void runGetRollCase() {
     Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
     Class<?>[] parameters = null;
     Object[] args = null;
     runStaticMethod(cls, "getRoll", parameters, args);
+  }
+  
+  /**
+   * A helper method for testing getBet.
+   */
+  private void runGetBetCase(int pool) {
+    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
+    Class<?>[] parameters = {Scanner.class, int.class};
+    Object[] args = {new Scanner(System.in), pool};
+    runStaticMethod(cls, "getRoll", parameters, args);
+  }
+  
+  @Test
+  public void testGetRoll() {
+    runGetRollCase();
   }
 }
