@@ -86,7 +86,7 @@ public class Project07Test {
   /**
    * A generic method for running static methods using reflection.
    */
-  public static Object runStaticMethod(Class<?> cls, String methodName, Class<?>[] parameters, Object[] args) {
+  public static Object runStaticMethod(String methodName, Class<?>[] parameters, Object[] args) {
     Object returnValue = null;
     try {
       Method meth = cls.getDeclaredMethod(methodName, parameters);
@@ -113,8 +113,8 @@ public class Project07Test {
    */
   private void runMain(ArrayList<String> toTest) {
     Class<?>[] parameters = {String[].class};
-    Object[] args = null;
-    runStaticMethod(this.cls, "main", parameters, args);
+    Object[] args = {null};
+    runStaticMethod("main", parameters, args);
   }
   
   /**
@@ -172,8 +172,8 @@ public class Project07Test {
   /**
    * A helper method for testing main.
    */
-  private void runMainCase() {
-    String input = buildLines();
+  private void runMainCase(String... guessesAndBets) {
+    String input = buildLines(guessesAndBets);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
     
@@ -192,7 +192,7 @@ public class Project07Test {
   private int runGetRollCase() {
     Class<?>[] parameters = null;
     Object[] args = null;
-    return (Integer) runStaticMethod(this.cls, "getRoll", parameters, args);
+    return (Integer) runStaticMethod("getRoll", parameters, args);
   }
   
   /**
@@ -204,7 +204,7 @@ public class Project07Test {
     System.setIn(inContent);
     Class<?>[] parameters = {Scanner.class, int.class};
     Object[] args = {new Scanner(System.in), pool};
-    return (Integer) runStaticMethod(this.cls, "getBet", parameters, args);
+    return (Integer) runStaticMethod("getBet", parameters, args);
   }
   
   /**
@@ -216,16 +216,16 @@ public class Project07Test {
     System.setIn(inContent);
     Class<?>[] parameters = {Scanner.class};
     Object[] args = {new Scanner(System.in)};
-    return (Character) runStaticMethod(this.cls, "getHighLow", parameters, args);
+    return (Character) runStaticMethod("getHighLow", parameters, args);
   }
   
   /**
-   * A helper method 
+   * A helper method for testing determineWinnings.
    */
   private int runDetermineWinnings(char highLow, int bet, int roll) {
     Class<?>[] parameters = {char.class, int.class, int.class};
     Object[] args = {highLow, bet, roll};
-    return (Integer) runStaticMethod(this.cls, "determineWinnings", parameters, args);
+    return (Integer) runStaticMethod("determineWinnings", parameters, args);
   }
   
   @Test
@@ -310,5 +310,10 @@ public class Project07Test {
   public void testDetermineWinningsSevensWrong() {
     int winnings = runDetermineWinnings('S', 100, 10);
     assertEquals(-400, winnings);
+  }
+  
+  @Test
+  public void testMainExit() {
+    runMainCase("0");
   }
 }
