@@ -257,4 +257,10 @@ public class Project07Test {
     char result = runGetHighLow("L");
     assertEquals('L', result);
   }
+  
+  @Test
+  public void testHighLowInvalid() {
+    char result = runGetHighLow("G", "L");
+    assertEquals('L', result);
+  }
 }
