@@ -27,7 +27,7 @@ public class Project07Test {
   @Before
   public void setUp() {
     System.setOut(new PrintStream(outContent));
-
+    
   }
   
   /**
@@ -281,5 +281,29 @@ public class Project07Test {
   public void testDetermineWinningsHighWrong() {
     int winnings = runDetermineWinnings('H', 100, 3);
     assertEquals(-100, winnings);
+  }
+  
+  @Test
+  public void testDetermineWinningsLowRight() {
+    int winnings = runDetermineWinnings('L', 100, 2);
+    assertEquals(100, winnings);
+  }
+  
+  @Test
+  public void testDetermineWinningsLowWrong() {
+    int winnings = runDetermineWinnings('L', 100, 10);
+    assertEquals(-100, winnings);
+  }
+  
+  @Test
+  public void testDetermineWinningsSevensRight() {
+    int winnings = runDetermineWinnings('S', 100, 7);
+    assertEquals(400, winnings);
+  }
+  
+  @Test
+  public void testDetermineWinningsSevensWrong() {
+    int winnings = runDetermineWinnings('S', 100, 10);
+    assertEquals(-400, winnings);
   }
 }
