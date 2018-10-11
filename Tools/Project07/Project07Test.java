@@ -216,6 +216,13 @@ public class Project07Test {
     return (Character) runStaticMethod(cls, "getHighLow", parameters, args);
   }
   
+  private int runDetermineWinnings(char highLow, int bet, int roll) {
+    Class<?> cls = getClass(getTestClasses(PROJECT_NUMBER));
+    Class<?>[] parameters = {char.class, int.class, int.class};
+    Object[] args = {highLow, bet, roll};
+    return (Integer) runStaticMethod(cls, "determineWinnings", parameters, args);
+  }
+  
   @Test
   public void testGetRoll() {
     int result = runGetRollCase();
@@ -262,5 +269,17 @@ public class Project07Test {
   public void testHighLowInvalid() {
     char result = runGetHighLow("G", "L");
     assertEquals('L', result);
+  }
+  
+  @Test
+  public void testDetermineWinningsHighRight() {
+    int winnings = runDetermineWinnings('H', 100, 10);
+    assertEquals(100, winnings);
+  }
+  
+  @Test
+  public void testDetermineWinningsHighWrong() {
+    int winnings = runDetermineWinnings('H', 100, 3);
+    assertEquals(-100, winnings);
   }
 }
