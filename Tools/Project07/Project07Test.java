@@ -135,6 +135,7 @@ public class Project07Test {
     toTest.add("Project%1$s");
     toTest.add("osu.cse1223.DragonsGame");
     toTest.add("Project04.DragonTrainers");
+    toTest.add("Main");
     String projectNumberWhole = Integer.toString(project);
     String projectNumberPad = "0" + projectNumberWhole;
     int originalSize = toTest.size();
@@ -166,6 +167,10 @@ public class Project07Test {
    */
   private String buildSolution(String... creditCardNumbers) {
     ArrayList<String> solutionList = new ArrayList<String>();
+    solutionList.add("You have 100 dollars.");
+    solutionList.add("Enter an amount to bet (0 to quit):");
+    solutionList.add("You have 100 dollars left.");
+    solutionList.add("Goodbye!");
     return String.join("\n", solutionList);
   }
   
@@ -309,11 +314,6 @@ public class Project07Test {
   @Test
   public void testDetermineWinningsSevensWrong() {
     int winnings = runDetermineWinnings('S', 100, 10);
-    assertEquals(-400, winnings);
-  }
-  
-  @Test
-  public void testMainExit() {
-    runMainCase("0");
+    assertEquals(-100, winnings);
   }
 }
