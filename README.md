@@ -63,7 +63,7 @@ Tests run: 16,  Failures: 3
 Current log format:
 
 ```json
-}
+{
     "students": {
         "student": {
             "path": "C:/Users/Jerem/Downloads\\Dump\\student\\Project04\\src\\osu\\cse1223\\Project04.java",
@@ -209,7 +209,7 @@ Current log format:
             "execution_stderr": "",
             "grade_estimate": 8.125
         }
-    }
+    },
     "successful_runs": 17,
     "failing_runs": 19,
     "passed_test_cases": 75,
