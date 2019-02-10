@@ -2,6 +2,8 @@ import os
 import pathlib
 import zipfile
 import subprocess
+import json
+import re
 from tkinter import filedialog
 
 ARCHIVE = "Archives"
@@ -64,7 +66,7 @@ def compile_junit(classes: str, classpath: str, test_file: str) -> subprocess.Co
     return run_command(command)
 
 
-def test_junit(classes: str , classpath: str, test_class: str) -> subprocess.CompletedProcess:
+def test_junit(classes: str, classpath: str, test_class: str) -> subprocess.CompletedProcess:
     """
     Runs the java execution command.
     :param classes: a directory of classes under test
@@ -72,7 +74,7 @@ def test_junit(classes: str , classpath: str, test_class: str) -> subprocess.Com
     :param test_class: a test file to be executed
     :return: the completed process object after execution
     """
-    command = "java -cp \"%s;%s\". org.junit.runner.JUnitCore %s" %(classes, classpath, test_class)
+    command = "java -cp \"%s;%s\". org.junit.runner.JUnitCore %s" % (classes, classpath, test_class)
     return run_command(command)
 
 
@@ -90,7 +92,7 @@ def run_command(command: str) -> subprocess.CompletedProcess:
     return result
 
 
-def grade_file(classes: str, build_file: str, test_class: str, results):
+def grade_file(classes: str, build_file: str, test_class: str, results) -> dict:
     """
     Grades a file.
     :param classes: a directory contain files under test
@@ -104,26 +106,125 @@ def grade_file(classes: str, build_file: str, test_class: str, results):
     compile_junit(classes, classpath, build_file)
     compilation_results = compile_junit(classes, classpath, test_class)
     execution_results = test_junit(classes, classpath, get_test_name(test_class))
-    write_to_file(results, compilation_results, execution_results, build_file)
+    student_grade_report = generate_student_json(compilation_results, execution_results, build_file)
+    return student_grade_report
 
 
-def write_to_file(results, compilation_results: subprocess.CompletedProcess, execution_results: subprocess.CompletedProcess, build_file: str):
+def generate_student_json(compilation_results: subprocess.CompletedProcess,
+                          execution_results: subprocess.CompletedProcess, build_file: str) -> dict:
+    """
+    Generates the json solution.
+    :param compilation_results: the compilations results process
+    :param execution_results: the execution results process
+    :param build_file: path to solution
+    :return: the data dictionary
+    """
+    raw_test_results = execution_results.stdout.decode("utf-8").splitlines()
+    output_dict = dict()
+    output_dict["path"] = build_file
+    output_dict["run_status"] = "SUCCESS" if len(raw_test_results) > 2 else "FAILURE"
+    output_dict["solution"] = read_solution(build_file)
+    output_dict["compilation_stdout"] = compilation_results.stdout.decode("utf-8")
+    output_dict["compilation_stderr"] = compilation_results.stderr.decode("utf-8")
+    output_dict["execution_stdout"] = parse_test_results(raw_test_results)
+    output_dict["execution_stderr"] = execution_results.stderr.decode("utf-8")
+    output_dict["grade_estimate"] = calculate_grade(output_dict)
+    return output_dict
+
+
+def calculate_grade(student: dict) -> float:
+    """
+    Gives a grade estimate for the student.
+    :param student: a student's data
+    :return: a grade estimate
+    """
+    if student["run_status"] == "FAILURE":
+        grade_estimate = 0
+    else:
+        test_data = student["execution_stdout"]
+        failed_tests = test_data["failure_count"]
+        passed_tests = test_data["success_count"]
+        total_tests = failed_tests + passed_tests
+        grade_estimate = (passed_tests / total_tests) * 10
+    return grade_estimate
+
+
+def read_solution(solution_path):
+    """
+    Reads the solution and returns it as a list of lines.
+    :param solution_path: path to the solution
+    :return: the solution as a list of lines
+    """
+    with open(solution_path) as solution:
+        data = solution.readlines()
+    return data
+
+
+def parse_test_results(raw_test_results: list) -> dict:
+    """
+    Parses a list of test results.
+    :param raw_test_results: a list of test results
+    :return: the results as a dictionary
+    """
+    test_results = dict()
+    test_results["failed_test_cases"] = dict()
+    i = 0
+    while i < len(raw_test_results):
+        line = raw_test_results[i]
+        if "version" in line:
+            test_results["junit_version"] = line.split()[-1]
+        elif "Time" in line:
+            test_results["time"] = float(line.split()[-1])
+        elif "Failures" in line:
+            fails = int(line.split()[-1])
+            successes = int(line.split()[2][:2]) - fails
+            test_results["failure_count"] = fails
+            test_results["success_count"] = successes
+        elif "OK (" in line: # Passed all tests
+            test_results["failure_count"] = 0
+            test_results["success_count"] = int(line.split()[1][1:])
+        elif re.search(r"\d+\) ", line):
+            failed_test_cases = test_results["failed_test_cases"]
+            i = parse_test_cases(raw_test_results, failed_test_cases, i)
+        i += 1
+
+    return test_results
+
+
+def parse_test_cases(raw_test_results: list, failed_test_cases: dict, index: int) -> int:
+    """
+    Parses a test case.
+
+    :param raw_test_results: the list of test results by line
+    :param failed_test_cases: the failed test cases dictionary
+    :param index: the current index into the raw test results
+    :return: the index at the end of execution
+    """
+    test_case = raw_test_results[index].split()[-1]
+    failed_test_cases[test_case] = dict()
+    failed_test_cases[test_case]["trace"] = list()
+    line = raw_test_results[index]
+    next_failed_index = str(int(line[0]) + 1)
+    while len(line) != 0 and line[0] != next_failed_index:
+        if "\t" in line:
+            failed_test_cases[test_case]["trace"].append(line.replace("\t", ""))
+        elif "expected" in line:
+            comparison = line.split()
+            failed_test_cases[test_case]["expected"] = comparison[1].replace("expected:", "")
+            failed_test_cases[test_case]["was"] = comparison[-1].replace("was:", "")
+        index += 1
+        line = raw_test_results[index]
+    return index - 1
+
+
+def write_to_file(results, grade_report: dict):
     """
     Writes results to a file.
     :param results: the open file reference
-    :param compilation_results: the completed process object from compilation
-    :param execution_results: the completed process object from execution
-    :param build_file: the path to the student's solution
+    :param grade_report: a list of grades
     :return: None
     """
-    header = "+++++++++++++++ %s ++++++++++++++++" % get_author_name(build_file)
-    print(header, file=results)
-    print(file=results)
-    print(build_file, file=results)
-    print(compilation_results.stdout.decode("utf-8"), file=results)
-    print(compilation_results.stderr.decode("utf-8"), file=results)
-    print(execution_results.stdout.decode("utf-8"), file=results)
-    print(execution_results.stderr.decode("utf-8"), file=results)
+    json.dump(grade_report, results, indent=4)
 
 
 def automate_grading(root: str):
@@ -138,7 +239,10 @@ def automate_grading(root: str):
     )
     test_dir = os.path.join(root, "Test")
     os.mkdir(test_dir)
-    with open(os.path.join(root, "results.txt"), "w") as results:
+    grade_report = dict()
+    grade_report["students"] = dict()
+    json_file = get_test_name(test_class) + ".json"
+    with open(os.path.join(root, json_file), "w") as results:
         for subdir, dirs, files in os.walk(os.path.join(root, DUMP)):
             java_files = [name for name in files if ".java" in name and "module-info" not in name]
             for file_name in java_files:
@@ -146,7 +250,37 @@ def automate_grading(root: str):
                 author_name = get_author_name(file_path)
                 classes = os.path.join(test_dir, author_name, file_name.split(".")[0])
                 pathlib.Path(classes).mkdir(parents=True, exist_ok=True)
-                grade_file(classes, file_path, test_class, results)
+                student_grade_report = grade_file(classes, file_path, test_class, results)
+                grade_report["students"][author_name] = student_grade_report
+        report_meta_data(grade_report)
+        write_to_file(results, grade_report)
+
+
+def report_meta_data(grade_report: dict):
+    """
+    Adds some meta data to the report such as the number of successful runs.
+    :param grade_report: the grade report dictionary
+    :return: None
+    """
+    successful_runs = 0
+    total_passed_test_cases = 0
+    total_failed_test_cases = 0
+    students = grade_report["students"]
+    for student in students:
+        student_data = students[student]
+        if student_data["run_status"] == "SUCCESS":
+            successful_runs += 1
+            passed_test_cases = student_data["execution_stdout"]["success_count"]
+            failed_test_cases = student_data["execution_stdout"]["failure_count"]
+            total_passed_test_cases += passed_test_cases
+            total_failed_test_cases += failed_test_cases
+    failed_runs = len(grade_report["students"]) - successful_runs
+    skipped_test_cases = ((total_failed_test_cases + total_passed_test_cases) / successful_runs) * failed_runs
+    grade_report["successful_runs"] = successful_runs
+    grade_report["failing_runs"] = failed_runs
+    grade_report["passed_test_cases"] = total_passed_test_cases
+    grade_report["failed_test_cases"] = total_failed_test_cases
+    grade_report["skipped_test_cases"] = int(skipped_test_cases)
 
 
 def get_author_name(file_path: str) -> str:
