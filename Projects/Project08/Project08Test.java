@@ -223,7 +223,7 @@ public class Project08Test {
     Class<?>[] parameters = {int.class};
     Object[] args = {value};
     String result = (String) runStaticMethod("decimalToBinary", parameters, args);
-    assertEquals(expectedResult, result);
+    assertEquals("ERROR", expectedResult, result);
   }
   
   /**
