@@ -195,7 +195,7 @@ public class Project08Test {
         solutionList.add(getBinary(number));
       }
     }
-    solutionList.add("Goodbye!");
+    solutionList.add("Goodbye");
     return String.join("\n", solutionList);
   }
   
