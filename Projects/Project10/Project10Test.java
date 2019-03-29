@@ -261,10 +261,14 @@ public class Project10Test {
    * A helper method for testing the get result method.
    */
   private void runGetResult(String expectedResult, int[] dice) {
+    runGetResult("", expectedResult, dice);
+  }
+
+  private void runGetResult(String message, String expectedResult, int[] dice) {
     Class<?>[] parameters = {int[].class};
     Object[] args = {dice};
     String result = (String) runStaticMethod("getResult", parameters, args);
-    assertEquals(expectedResult, result);
+    assertEquals(message, expectedResult, result);
   }
   
   /**
@@ -329,37 +333,37 @@ public class Project10Test {
   
   @Test
   public void testGetResultFourOfAKind() {
-    runGetResult("Four of a kind!", new int[]{4, 4, 4, 6, 4});
+    runGetResult("Failed to recognize four of a kind in 4, 4, 4, 6, 4", "Four of a kind!", new int[]{4, 4, 4, 6, 4});
   }
   
   @Test
   public void testGetResultFullHouse() {
-    runGetResult("Full House!", new int[]{4, 4, 4, 6, 6});
+    runGetResult("Failed to recognize full house in 4, 4, 4, 6, 6", "Full House!", new int[]{4, 4, 4, 6, 6});
   }
   
   @Test
   public void testGetResultThreeOfAKind() {
-    runGetResult("Three of a kind!", new int[]{4, 4, 4, 7, 6});
+    runGetResult("Failed to recognize three of a kind in 4, 4, 4, 7, 6", "Three of a kind!", new int[]{4, 4, 4, 7, 6});
   }
   
   @Test
   public void testGetResultTwoPair() {
-    runGetResult("Two pair!", new int[]{4, 4, 7, 7, 6});
+    runGetResult("Failed to recognize two pair in 4, 4, 7, 7, 6", "Two pair!", new int[]{4, 4, 7, 7, 6});
   }
   
   @Test
   public void testGetResultOnePair() {
-    runGetResult("One pair!", new int[]{4, 4, 7, 5, 6});
+    runGetResult("Failed to recognize one pair in 4, 4, 7, 5, 6", "One pair!", new int[]{4, 4, 7, 5, 6});
   }
   
   @Test
   public void testGetResultHighestValue() {
-    runGetResult("Highest value 7", new int[]{4, 1, 7, 5, 6});
+    runGetResult("Failed to recognize highest value of 7 in 4, 1, 7, 5, 6", "Highest value 7", new int[]{4, 1, 7, 5, 6});
   }
   
   @Test
   public void testGetResultStraight() {
-    runGetResult("Straight!", new int[]{1, 2, 3, 4, 5});
+    runGetResult("Failed to get extra credit by recognizing straight in 1, 2, 3, 4, 5", "Straight!", new int[]{1, 2, 3, 4, 5});
   }
   
   @Test
