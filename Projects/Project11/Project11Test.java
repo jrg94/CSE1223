@@ -227,6 +227,13 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  private void runCheck(String message, boolean expectedResult, char guess, ArrayList<Character> chars) {
+    Class<?>[] parameters = {char.class, ArrayList.class};
+    Object[] args = {guess, chars};
+    boolean result = (boolean) runStaticMethod("check", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
   public void testCorrectGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
@@ -255,5 +262,14 @@ public class Project11Test {
   @Test
   public void testStarWord() {
     runStarWord("Failed to star word", "***", "CAT");
+  }
+  
+  @Test
+  public void testTrueCheck() {
+    ArrayList<Character> chars = new ArrayList<Character>();
+    chars.add('C');
+    chars.add('A');
+    chars.add('T');
+    runCheck("Failed to verify character exists", true, 'C', chars);
   }
 }
