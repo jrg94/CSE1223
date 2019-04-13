@@ -267,6 +267,13 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  private void runGetList(String message, ArrayList<String> expectedResult, Scanner in) {
+    Class<?>[] parameters = {Scanner.class};
+    Object[] args = {in};
+    ArrayList<?> result = (ArrayList<?>) runStaticMethod("getList", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
   public void testCorrectModifyGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
@@ -341,5 +348,21 @@ public class Project11Test {
   @Test
   public void testInvalidGetGuessCharacter() {
     runGetCharacterGuess("Failed to get character", 'C', new Scanner("Rat\nC"));
+  }
+  
+  @Test
+  public void testOneWordGetlist() {
+    ArrayList<String> oneWord = new ArrayList<String>();
+    oneWord.add("CAT");
+    runGetList("Failed to get one word from file", oneWord, new Scanner("CAT\n"));
+  }
+  
+  @Test
+  public void testManyWordsGetlist() {
+    ArrayList<String> manyWords = new ArrayList<String>();
+    manyWords.add("CAT");
+    manyWords.add("HELLO");
+    manyWords.add("MIGHTY");
+    runGetList("Failed to get several words from file", manyWords, new Scanner("CAT\nHELLO\nMIGHTY\n"));
   }
 }
