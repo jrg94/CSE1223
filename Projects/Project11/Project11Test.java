@@ -272,4 +272,13 @@ public class Project11Test {
     chars.add('T');
     runCheck("Failed to verify character exists", true, 'C', chars);
   }
+  
+  @Test
+  public void testFalseCheck() {
+    ArrayList<Character> chars = new ArrayList<Character>();
+    chars.add('C');
+    chars.add('A');
+    chars.add('T');
+    runCheck("Failed to verify character does not exist", false, 'X', chars);
+  }
 }
