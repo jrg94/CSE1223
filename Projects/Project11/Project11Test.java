@@ -227,11 +227,18 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
-  private void runCheck(String message, boolean expectedResult, char guess, ArrayList<Character> chars) {
+  private void runCheckInList(String message, boolean expectedResult, char guess, ArrayList<Character> chars) {
     Class<?>[] parameters = {char.class, ArrayList.class};
     Object[] args = {guess, chars};
-    boolean result = (boolean) runStaticMethod("check", parameters, args);
+    boolean result = (boolean) runStaticMethod("checkInList", parameters, args);
     assertEquals(message, expectedResult, result);
+  }
+  
+  private void runGetRandomWord(String message, ArrayList<String> words) {
+    Class<?>[] parameters = {ArrayList.class};
+    Object[] args = {words};
+    String result = (String) runStaticMethod("getRandomWord", parameters, args);
+    assertTrue(message, words.contains(result));
   }
   
   @Test
@@ -270,7 +277,7 @@ public class Project11Test {
     chars.add('C');
     chars.add('A');
     chars.add('T');
-    runCheck("Failed to verify character exists", true, 'C', chars);
+    runCheckInList("Failed to verify character exists", true, 'C', chars);
   }
   
   @Test
@@ -279,6 +286,14 @@ public class Project11Test {
     chars.add('C');
     chars.add('A');
     chars.add('T');
-    runCheck("Failed to verify character does not exist", false, 'X', chars);
+    runCheckInList("Failed to verify character does not exist", false, 'X', chars);
+  }
+  
+  @Test
+  public void testGetRandomWord() {
+    ArrayList<String> words = new ArrayList<String>();
+    words.add("CAT");
+    words.add("MIGHTY");
+    runGetRandomWord("Failed to find an existing word", words);
   }
 }
