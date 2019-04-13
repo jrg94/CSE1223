@@ -257,6 +257,13 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  private void runGetCharacterGuess(String message, char expectedResult, Scanner in) {
+    Class<?>[] parameters = {Scanner.class};
+    Object[] args = {in};
+    char result = (char) runStaticMethod("getCharacterGuess", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
   public void testCorrectModifyGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
@@ -321,5 +328,10 @@ public class Project11Test {
   @Test
   public void testFalseCheckWord() {
     runCheckWord("Failed to verify != words", false, "RAT", "CAT");
+  }
+  
+  @Test
+  public void testNormalGetGuessCharacter() {
+    runGetCharacterGuess("Failed to get character", 'C', new Scanner("C\n"));
   }
 }
