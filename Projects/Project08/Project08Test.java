@@ -195,7 +195,7 @@ public class Project08Test {
         solutionList.add(getBinary(number));
       }
     }
-    solutionList.add("Goodbye!");
+    solutionList.add("Goodbye");
     return String.join("\n", solutionList);
   }
   
@@ -219,11 +219,18 @@ public class Project08Test {
   /**
    * Tests that decimal to binary conversion works.
    */
-  private void runDecimalToBinaryCase(String expectedResult, int value) {
+  private void runDecimalToBinaryCase(String expectedResult, int value, String message) {
     Class<?>[] parameters = {int.class};
     Object[] args = {value};
     String result = (String) runStaticMethod("decimalToBinary", parameters, args);
-    assertEquals(expectedResult, result);
+    assertEquals(message, expectedResult, result);
+  }
+  
+  /**
+   * Overload of decimal to binary test method.
+   */
+  private void runDecimalToBinaryCase(String expectedResult, int value) {
+    runDecimalToBinaryCase(expectedResult, value, "");
   }
   
   /**
@@ -238,12 +245,12 @@ public class Project08Test {
   
   @Test
   public void testDecimalToBinaryZero() {
-    runDecimalToBinaryCase("0", 0);
+    runDecimalToBinaryCase("0", 0, "Solution fails to convert decimal zero to binary zero");
   }
   
   @Test
   public void testDecimalToBinarySeven() {
-    runDecimalToBinaryCase("111", 7);
+    runDecimalToBinaryCase("111", 7, "Solution fails to convert decimal 7 to binary 111");
   }
   
   @Test
