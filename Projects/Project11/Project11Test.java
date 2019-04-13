@@ -231,4 +231,14 @@ public class Project11Test {
   public void testZeroCheckChar() {
     runCheckChar("Failed to detect zero characters in string", 0, 'X', "CAT");
   }
+  
+  @Test
+  public void testOneCheckChar() {
+    runCheckChar("Failed to detect one character in string", 1, 'C', "CAT");
+  }
+  
+  @Test
+  public void testAllCheckChar() {
+    runCheckChar("Failed to detect one character in string", 3, 'Q', "QQQ");
+  }
 }
