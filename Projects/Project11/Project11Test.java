@@ -197,23 +197,6 @@ public class Project11Test {
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
   
-  /**
-   * A helper method for testing the reset dice method.
-   */
-  private void runResetDice(int[] expectedResult, int[] dice) {
-    Class<?>[] parameters = {int[].class};
-    Object[] args = {dice};
-    runStaticMethod("resetDice", parameters, args);
-    assertArrayEquals(expectedResult, dice);
-  }
-  
-  private void runReadNextSeries() {
-  }
-  
-  private void runGetMedian() {
-  }
-  
-  private void runGetAverage() {
-  }
+
   
 }
