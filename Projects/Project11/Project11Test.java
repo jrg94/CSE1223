@@ -227,6 +227,9 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  /**
+   * Runs the checkInList method
+   */
   private void runCheckInList(String message, boolean expectedResult, char guess, ArrayList<Character> chars) {
     Class<?>[] parameters = {char.class, ArrayList.class};
     Object[] args = {guess, chars};
@@ -234,6 +237,9 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  /**
+   * Runs the getRandomWord method
+   */
   private void runGetRandomWord(String message, ArrayList<String> words) {
     Class<?>[] parameters = {ArrayList.class};
     Object[] args = {words};
@@ -241,6 +247,9 @@ public class Project11Test {
     assertTrue(message, words.contains(result));
   }
   
+  /**
+   * Runs the checkWord method
+   */
   private void runCheckWord(String message, boolean expectedResult, String guess, String solution) {
     Class<?>[] parameters = {String.class, String.class};
     Object[] args = {guess, solution};
@@ -270,7 +279,7 @@ public class Project11Test {
   
   @Test
   public void testAllCheckChar() {
-    runCheckChar("Failed to detect one character in string", 3, 'Q', "QQQ");
+    runCheckChar("Failed to detect all characters in string", 3, 'Q', "QQQ");
   }
   
   @Test
@@ -306,11 +315,11 @@ public class Project11Test {
   
   @Test
   public void testTrueCheckWord() {
-    runCheckWord("Failed to verify equivalent words", true, "CAT", "CAT");
+    runCheckWord("Failed to verify == words", true, "CAT", "CAT");
   }
   
   @Test
   public void testFalseCheckWord() {
-    runCheckWord("Failed to verify equivalent words", false, "RAT", "CAT");
+    runCheckWord("Failed to verify != words", false, "RAT", "CAT");
   }
 }
