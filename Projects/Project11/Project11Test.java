@@ -257,6 +257,9 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  /**
+   * Runs the getCharacterGuess method
+   */
   private void runGetCharacterGuess(String message, char expectedResult, Scanner in) {
     Class<?>[] parameters = {Scanner.class};
     Object[] args = {in};
@@ -333,5 +336,10 @@ public class Project11Test {
   @Test
   public void testNormalGetGuessCharacter() {
     runGetCharacterGuess("Failed to get character", 'C', new Scanner("C\n"));
+  }
+  
+  @Test
+  public void testInvalidGetGuessCharacter() {
+    runGetCharacterGuess("Failed to get character", 'C', new Scanner("Rat\nC"));
   }
 }
