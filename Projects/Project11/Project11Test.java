@@ -241,13 +241,20 @@ public class Project11Test {
     assertTrue(message, words.contains(result));
   }
   
+  private void runCheckWord(String message, boolean expectedResult, String guess, String solution) {
+    Class<?>[] parameters = {String.class, String.class};
+    Object[] args = {guess, solution};
+    boolean result = (boolean) runStaticMethod("checkWord", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
-  public void testCorrectGuess() {
+  public void testCorrectModifyGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
   }
   
   @Test
-  public void testIncorrectGuess() {
+  public void testIncorrectModifyGuess() {
     runModifyGuess("Failed to detect incorrect guess", "*AT", 'C', "BAT", "*AT");
   }
   
@@ -272,7 +279,7 @@ public class Project11Test {
   }
   
   @Test
-  public void testTrueCheck() {
+  public void testTrueCheckInList() {
     ArrayList<Character> chars = new ArrayList<Character>();
     chars.add('C');
     chars.add('A');
@@ -281,7 +288,7 @@ public class Project11Test {
   }
   
   @Test
-  public void testFalseCheck() {
+  public void testFalseCheckInList() {
     ArrayList<Character> chars = new ArrayList<Character>();
     chars.add('C');
     chars.add('A');
@@ -295,5 +302,15 @@ public class Project11Test {
     words.add("CAT");
     words.add("MIGHTY");
     runGetRandomWord("Failed to find an existing word", words);
+  }
+  
+  @Test
+  public void testTrueCheckWord() {
+    runCheckWord("Failed to verify equivalent words", true, "CAT", "CAT");
+  }
+  
+  @Test
+  public void testFalseCheckWord() {
+    runCheckWord("Failed to verify equivalent words", false, "RAT", "CAT");
   }
 }
