@@ -197,6 +197,23 @@ public class Project11Test {
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
   
-
+  /**
+   * Runs the modifyGuess method
+   */
+  private void runModifyGuess(String message, String expectedResult, char guess, String word, String stars) {
+    Class<?>[] parameters = {char.class, String.class, String.class};
+    Object[] args = {guess, word, stars};
+    String result = (String) runStaticMethod("modifyGuess", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
   
+  @Test
+  public void testCorrectGuess() {
+    runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
+  }
+  
+  @Test
+  public void testIncorrectGuess() {
+    runModifyGuess("Failed to detect incorrect guess", "*AT", 'C', "BAT", "*AT");
+  }
 }
