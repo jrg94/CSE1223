@@ -217,6 +217,16 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  /**
+   * Runs the starWord method
+   */
+  private void runStarWord(String message,String expectedResult, String word) {
+    Class<?>[] parameters = {String.class};
+    Object[] args = {word};
+    String result = (String) runStaticMethod("starWord", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
   public void testCorrectGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
@@ -240,5 +250,10 @@ public class Project11Test {
   @Test
   public void testAllCheckChar() {
     runCheckChar("Failed to detect one character in string", 3, 'Q', "QQQ");
+  }
+  
+  @Test
+  public void testStarWord() {
+    runStarWord("Failed to star word", "***", "CAT");
   }
 }
