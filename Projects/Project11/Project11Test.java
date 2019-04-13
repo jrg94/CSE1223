@@ -207,6 +207,16 @@ public class Project11Test {
     assertEquals(message, expectedResult, result);
   }
   
+  /**
+   * Runs the checkChar method
+   */
+  private void runCheckChar(String message, int expectedResult, char guess, String word) {
+    Class<?>[] parameters = {char.class, String.class};
+    Object[] args = {guess, word};
+    int result = (int) runStaticMethod("checkChar", parameters, args);
+    assertEquals(message, expectedResult, result);
+  }
+  
   @Test
   public void testCorrectGuess() {
     runModifyGuess("Failed to detect correct guess", "CAT", 'C', "CAT", "*AT");
@@ -215,5 +225,10 @@ public class Project11Test {
   @Test
   public void testIncorrectGuess() {
     runModifyGuess("Failed to detect incorrect guess", "*AT", 'C', "BAT", "*AT");
+  }
+  
+  @Test
+  public void testZeroCheckChar() {
+    runCheckChar("Failed to detect zero characters in string", 0, 'X', "CAT");
   }
 }
