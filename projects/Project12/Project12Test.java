@@ -286,7 +286,7 @@ public class Project12Test {
     Object clock = getClock();
     set(clock, 11, 11, 14, true);
     String time = time(clock);
-    assertEquals("11:11:14AM", reduceString(time));
+    assertEquals("11:11:14AM", reduceString(time).toUpperCase());
   }
   
   @Test
@@ -295,7 +295,7 @@ public class Project12Test {
     set(clock, 11, 11, 14, true);
     tick(clock);
     String time = time(clock);
-    assertEquals("11:11:15AM", reduceString(time));
+    assertEquals("11:11:15AM", reduceString(time).toUpperCase());
   }
   
   @Test
@@ -304,7 +304,7 @@ public class Project12Test {
     set(clock, 11, 11, 59, true);
     tick(clock);
     String time = time(clock);
-    assertEquals("11:12:00AM", reduceString(time));
+    assertEquals("11:12:00AM", reduceString(time).toUpperCase());
   }
   
   @Test
@@ -313,7 +313,7 @@ public class Project12Test {
     set(clock, 10, 59, 59, true);
     tick(clock);
     String time = time(clock);
-    assertEquals("11:00:00AM", reduceString(time));
+    assertEquals("11:00:00AM", reduceString(time).toUpperCase());
   }
   
   @Test
@@ -322,7 +322,7 @@ public class Project12Test {
     set(clock, 11, 59, 59, true);
     tick(clock);
     String time = time(clock);
-    assertEquals("12:00:00PM", reduceString(time));
+    assertEquals("12:00:00PM", reduceString(time).toUpperCase());
   }
   
   @Test
@@ -331,7 +331,7 @@ public class Project12Test {
     set(clock, 11, 59, 59, false);
     tick(clock);
     String time = time(clock);
-    assertEquals("12:00:00AM", reduceString(time));
+    assertEquals("12:00:00AM", reduceString(time).toUpperCase());
   }
   
 }
