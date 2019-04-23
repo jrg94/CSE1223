@@ -216,9 +216,9 @@ public class Project12Test {
   /**
    * A helper method for getting clock methods.
    */
-  private Method getClockMethod(String name) {
+  private Method getClockMethod(String name, Class... args) {
     try {
-      return getClock().getClass().getDeclaredMethod(name);
+      return getClock().getClass().getDeclaredMethod(name, args);
     } catch (NoSuchMethodException e) {
       e.printStackTrace();
     }
@@ -229,7 +229,7 @@ public class Project12Test {
    * Gets the set method
    */
   private Method getSet() {
-    return getClockMethod("set");
+    return getClockMethod("set", int.class, int.class, int.class, boolean.class);
   }
   
   /**
