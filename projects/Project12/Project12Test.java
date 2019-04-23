@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import org.junit.After;
 import java.io.*;
 import java.util.*;
-import osu.cse1223.SimpleClock;
+
 
 /**
  * Tests project 10 as specified by:
@@ -23,21 +23,24 @@ import osu.cse1223.SimpleClock;
  * doesn't structurally look exactly like the expected output. However, we do
  * care that the solution has all the expected content.
  */
-public class Project10Test {
-
+public class Project12Test {
+  
   private final ByteArrayOutputStream outContent = new ByteArrayOutputStream();
   private static final int PROJECT_NUMBER = 12;
   private static Class<?> cls = null;
-
+  
   /**
    * Gets the class name through trial and error and assigns it
    * permanently for the duration of testing.
    */
   @BeforeClass
   public static void setUpOnce() {
-    cls = getClass(getTestClasses(PROJECT_NUMBER));
+    ArrayList<String> list = new ArrayList<String>();
+    list.add("osu.cse1223.SimpleClock");
+    list.add("SimpleClock");
+    cls = getClass(list);
   }
-
+  
   /**
    * Sets input and output streams to local print streams for analysis.
    */
@@ -45,7 +48,7 @@ public class Project10Test {
   public void setUp() {
     System.setOut(new PrintStream(outContent));
   }
-
+  
   /**
    * Sets input and output streams back to normal.
    */
@@ -53,7 +56,7 @@ public class Project10Test {
   public void tearDown() {
     System.setOut(System.out);
   }
-
+  
   /**
    * Takes a set of inputs and joins them with newlines.
    *
@@ -68,7 +71,7 @@ public class Project10Test {
     }
     return sb.toString();
   }
-
+  
   /**
    * A recursive method which returns the main method from the proper class.
    *
@@ -92,7 +95,7 @@ public class Project10Test {
     }
     return cls;
   }
-
+  
   /**
    * A generic method for running static methods using reflection.
    */
@@ -115,18 +118,18 @@ public class Project10Test {
     }
     return returnValue;
   }
-
+  
   /**
    * Runs the main method of the test class.
    *
    * @param toTest an array of strings to test
    */
-  private void runMain(ArrayList<String> toTest) {
+  private void runMain() {
     Class<?>[] parameters = {String[].class};
     Object[] args = {null};
     runStaticMethod("main", parameters, args);
   }
-
+  
   /**
    * Generates a list of test classes.
    * Add test cases to this list as you find them.
@@ -159,7 +162,7 @@ public class Project10Test {
     }
     return toTest;
   }
-
+  
   /**
    * Removes all newlines and spaces, so strings can be
    * compared on a content basis.
@@ -170,9 +173,9 @@ public class Project10Test {
   private String reduceString(String input) {
     return input.replace("\n", "").replaceAll("\\s+", "").toLowerCase();
   }
-
+  
   /////////////////// Implementation //////////////////////////////////
-
+  
   /**
    * Generates the expected output for testing.
    */
@@ -180,7 +183,7 @@ public class Project10Test {
     ArrayList<String> solutionList = new ArrayList<String>();
     return String.join("\n", solutionList);
   }
-
+  
   /**
    * A helper method for testing main.
    */
@@ -188,67 +191,147 @@ public class Project10Test {
     String input = buildLines(numbers);
     InputStream inContent = new ByteArrayInputStream(input.getBytes());
     System.setIn(inContent);
-
+    
     // Run student solution
-    runMain(getTestClasses(PROJECT_NUMBER));
-
+    runMain();
+    
     // Test expected output to output
     String output = outContent.toString();
     String expectedOutput = buildSolution(numbers);
     assertEquals(reduceString(expectedOutput), reduceString(output));
   }
-
+  
+  /**
+   * A helper method for generating clocks
+   */
+  private Object getClock() {
+    try {
+      return cls.newInstance();
+    } catch (InstantiationException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
+  /**
+   * A helper method for getting clock methods.
+   */
+  private Method getClockMethod(String name) {
+    try {
+      return getClock().getClass().getDeclaredMethod(name);
+    } catch (NoSuchMethodException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
+  /**
+   * Gets the set method
+   */
+  private Method getSet() {
+    return getClockMethod("set");
+  }
+  
+  /**
+   * Gets the time method
+   */
+  private Method getTime() {
+    return getClockMethod("time");
+  }
+  
+  /**
+   * Gets the tick method
+   */
+  private Method getTick() {
+    return getClockMethod("tick");
+  }
+  
+  /**
+   * Invokes the tick method
+   */
+  private void tick(Object clock) {
+    try {
+      getTick().invoke(clock);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+  }
+  
+  /**
+   * Invokes the time method
+   */
+  private String time(Object clock) {
+    try {
+      String time = (String) getTime().invoke(clock);
+      return time;
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+    return null;
+  }
+  
+  /**
+   * Invokes the set method
+   */
+  private void set(Object clock, int hours, int minutes, int seconds, boolean morning) {
+    try {
+      getSet().invoke(clock, hours, minutes, seconds, morning);
+    } catch (IllegalAccessException | InvocationTargetException e) {
+      e.printStackTrace();
+    }
+  }
+  
   @Test
   public void TestSimpleClockSet() {
-    SimpleClock test = new SimpleClock();
-    test.set(11, 11, 14, true);
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 11, 11, 14, true);
+    String time = time(clock);
     assertEquals("11:11:14 AM", time);
   }
-
+  
   @Test
   public void TestSimpleClockTickSecond() {
-    SimpleClock test = new SimpleClock();
-    test.set(11, 11, 14, true);
-    test.tick();
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 11, 11, 14, true);
+    tick(clock);
+    String time = time(clock);
     assertEquals("11:11:15 AM", time);
   }
-
+  
   @Test
   public void TestSimpleClockTickMinute() {
-    SimpleClock test = new SimpleClock();
-    test.set(11, 11, 59, true);
-    test.tick();
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 11, 11, 59, true);
+    tick(clock);
+    String time = time(clock);
     assertEquals("11:12:00 AM", time);
   }
-
+  
   @Test
   public void TestSimpleClockTickHour() {
-    SimpleClock test = new SimpleClock();
-    test.set(10, 59, 59, true);
-    test.tick();
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 10, 59, 59, true);
+    tick(clock);
+    String time = time(clock);
     assertEquals("11:00:00 AM", time);
   }
-
+  
   @Test
   public void TestSimpleClockTickPM() {
-    SimpleClock test = new SimpleClock();
-    test.set(11, 59, 59, true);
-    test.tick();
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 11, 59, 59, true);
+    tick(clock);
+    String time = time(clock);
     assertEquals("12:00:00 PM", time);
   }
-
+  
   @Test
   public void TestSimpleClockTickAM() {
-    SimpleClock test = new SimpleClock();
-    test.set(11, 59, 59, false);
-    test.tick();
-    String time = test.time();
+    Object clock = getClock();
+    set(clock, 11, 59, 59, false);
+    tick(clock);
+    String time = time(clock);
     assertEquals("12:00:00 AM", time);
   }
-
+  
 }
